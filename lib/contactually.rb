@@ -1,6 +1,8 @@
 require 'active_support'
 require 'faraday'
 require 'json'
+require 'roar/decorator'
+require 'roar/representer/json'
 
 require 'contactually/version'
 require 'contactually/errors'

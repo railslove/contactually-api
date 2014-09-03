@@ -57,8 +57,14 @@ describe Contactually::Contacts do
 
   describe '#show' do
     it 'calls the api with correct params' do
-      allow(@master).to receive(:call).with('contacts/1.json', :get, { foo: :bar })
+      allow(@master).to receive(:call).with('contacts/1.json', :get, { foo: :bar }).and_return({ id: 1 })
       subject.show({ id: 1, foo: :bar })
+    end
+
+    it 'returns a contact' do
+      json = File.read(File.join(File.dirname(__FILE__),"fixtures/contact.json"))
+      allow(@master).to receive(:call).with('contacts/1.json', :get, { foo: :bar }).and_return(JSON.load(json))
+      expect(subject.show({ id: 1, foo: :bar })).to be_kind_of Contactually::Contact
     end
   end
 
@@ -98,8 +104,15 @@ describe Contactually::Contacts do
 
   describe '#index' do
     it 'calls the api with correct params' do
-      allow(@master).to receive(:call).with('contacts.json', :get, { foo: :bar })
+      allow(@master).to receive(:call).with('contacts.json', :get, { foo: :bar }).and_return({ 'contacts' => [] })
       subject.index({ foo: :bar })
+    end
+
+    it 'creates Contacts from json response' do
+      json = File.read(File.join(File.dirname(__FILE__),"fixtures/contacts_index.json"))
+      allow(@master).to receive(:call).with('contacts.json', :get, {}).and_return(JSON.load(json))
+      expect(subject.index({})).to be_kind_of Array
+      expect(subject.index({})[0]).to be_kind_of Contactually::Contact
     end
   end
 

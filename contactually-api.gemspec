@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Contactually::VERSION
   s.authors     = [ 'Johannes Heck' ]
   s.email       = [ 'johannes@railslove.com' ]
-  # s.homepage    = 'https://github.com/yoyostile/tempora'
+  s.homepage    = 'https://github.com/railslove/contactually-api'
   s.summary     = 'Contactually-API'
   s.description = 'Contactually-API'
 
@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activesupport'
   s.add_dependency 'faraday'
+  s.add_dependency 'roar'
 
   s.add_development_dependency 'pry-debugger'
   s.add_development_dependency 'rake'

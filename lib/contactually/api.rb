@@ -29,19 +29,11 @@ module Contactually
       JSON.load(response.body)
     end
 
-    def get_call(url, params)
-      response = Faraday.get base_url(url), call_params(params)
-      JSON.load(response.body)
-    end
-
-    def put_call(url, params)
-      response = Faraday.put base_url(url), params
-      JSON.load(response.body)
-    end
-
-    def delete_call(url, params)
-      response = Faraday.delete base_url(url), params
-      JSON.load(response.body)
+    [ :get, :put, :delete ].each do |method|
+      define_method("#{method}_call") do |url, params|
+        response = Faraday.send(method, base_url(url), call_params(params))
+        JSON.load(response.body)
+      end
     end
 
     def base_url(url)
