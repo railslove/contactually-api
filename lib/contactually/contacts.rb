@@ -63,7 +63,7 @@ module Contactually
     def show(params = {})
       raise MissingParameterError, 'Contact ID missing' unless params[:id]
       hash = @master.call("contacts/#{params[:id]}.json", :get, params_without_id(params))
-      ContactRepresenter.new(Contact.new).from_json(hash.to_json)
+      ContactRepresenter.new(Contact.new).from_hash(hash)
     end
 
     def tags(params = {})
