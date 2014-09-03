@@ -26,7 +26,7 @@ module Contactually
     def notes_hash_to_objects(hash)
       res = []
       hash['notes'].each do |note|
-        res << NoteRepresenter.new(Note.new).from_json(note.to_json)
+        res << NoteRepresenter.new(Note.new).from_hash(note)
       end
       res
     end

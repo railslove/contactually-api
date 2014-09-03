@@ -98,7 +98,7 @@ module Contactually
     def contacts_hash_to_objects(hash)
       res = []
       hash['contacts'].each do |contact|
-        res << ContactRepresenter.new(Contact.new).from_json(contact.to_json)
+        res << ContactRepresenter.new(Contact.new).from_hash(contact)
       end
       res
     end
