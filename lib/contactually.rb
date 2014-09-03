@@ -8,6 +8,7 @@ require 'contactually/version'
 require 'contactually/errors'
 require 'contactually/api'
 require 'contactually/contacts'
+require 'contactually/notes'
 
 module Contactually
   include ActiveSupport::Configurable

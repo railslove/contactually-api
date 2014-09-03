@@ -41,7 +41,6 @@ module Contactually
   end
 
   class Contacts
-
     def initialize(master)
       @master = master
     end
@@ -81,22 +80,27 @@ module Contactually
 
     def index(params = {})
       hash = @master.call('contacts.json', :get, params)
-      res = []
-      hash['contacts'].each do |contact|
-        res << ContactRepresenter.new(Contact.new).from_json(contact.to_json)
-      end
-      res
+      contacts_hash_to_objects(hash)
     end
 
     def search(params = {})
       raise MissingParameterError, 'Search term missing' unless params[:term]
-      @master.call('contacts/search.json', :get, params)
+      hash = @master.call('contacts/search.json', :get, params)
+      contacts_hash_to_objects(hash)
     end
 
     private
 
     def params_without_id(params)
       params.clone.delete_if { |k,v| k == :id }
+    end
+
+    def contacts_hash_to_objects(hash)
+      res = []
+      hash['contacts'].each do |contact|
+        res << ContactRepresenter.new(Contact.new).from_json(contact.to_json)
+      end
+      res
     end
   end
 end
