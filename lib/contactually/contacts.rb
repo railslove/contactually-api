@@ -69,7 +69,8 @@ module Contactually
 
     def tags(params = {})
       raise MissingParameterError, 'Contact ID missing' unless params[:id]
-      raise MissingParameterError, 'Contact tags missing' unless params[:tags] && params[:tags].class == Array
+      raise MissingParameterError, 'Contact tags missing' unless params[:tags]
+      params[:tags] = params[:tags].join(', ') if params[:tags].class == Array
       @master.call("contacts/#{params[:id]}/tags.json", :post, Contactually::Utils.params_without_id(params))
     end
 

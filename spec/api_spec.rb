@@ -71,14 +71,14 @@ describe Contactually::API do
       it 'parses from json response' do
         allow(Faraday).to receive(:get).
           with('https://www.contactually.com/api/v1/url', { foo: :bar, api_key: 'VALID_API_KEY' }).
-          and_return(Struct.new(:body).new("{ \"foo\": \"bar\" }"))
+          and_return(Struct.new(:status, :body).new(200, "{ \"foo\": \"bar\" }"))
         expect(subject.call('url', :get, { foo: :bar })).to be_kind_of Hash
       end
     end
 
     describe '#post_call' do
       it 'parses from json response' do
-        allow(Faraday).to receive(:post).and_return(Struct.new(:body).new("{ \"foo\": \"bar\" }"))
+        allow(Faraday).to receive(:post).and_return(Struct.new(:status, :body).new(200, "{ \"foo\": \"bar\" }"))
         expect(subject.call('url', :post, { foo: :bar })).to be_kind_of Hash
       end
     end

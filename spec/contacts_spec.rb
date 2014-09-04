@@ -88,13 +88,15 @@ describe Contactually::Contacts do
       expect{ subject.tags({ id: 1 }) }.to raise_error Contactually::MissingParameterError
     end
 
-    it 'throws an error if tags is no array' do
-      expect{ subject.tags({ id: 1, tags: 'lol' }) }.to raise_error Contactually::MissingParameterError
+    it 'calls the api with correct params - Array' do
+      allow(@master).to receive(:call).with('contacts/1/tags.json', :post, { tags: 'lol, haha' })
+      subject.tags({ id: 1, tags: [ 'lol', 'haha' ]})
+      expect(@master).to have_received(:call)
     end
 
-    it 'calls the api with correct params' do
-      allow(@master).to receive(:call).with('contacts/1/tags.json', :post, { tags: [ 'lol' ] })
-      subject.tags({ id: 1, tags: [ 'lol' ]})
+    it 'calls the api with correct params - String' do
+      allow(@master).to receive(:call).with('contacts/1/tags.json', :post, { tags: 'lol, haha' })
+      subject.tags({ id: 1, tags: 'lol, haha' })
       expect(@master).to have_received(:call)
     end
   end
