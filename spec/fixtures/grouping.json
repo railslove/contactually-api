@@ -1,0 +1,19 @@
+{
+  "id": 1234123,
+  "type": "Grouping::Bucket",
+  "name": "Acquaintance",
+  "stub": "acquaintance",
+  "user_id": 421232,
+  "domain_id": null,
+  "editable": null,
+  "conversable": null,
+  "locked": false,
+  "derived_from_id": null,
+  "created_at": "2014-08-19T11:29:55Z",
+  "updated_at": "2014-09-03T22:14:05Z",
+  "has_followups": true,
+  "num_days_to_followup": 90,
+  "program_id": null,
+  "objective": false,
+  "sort_order": 0
+}

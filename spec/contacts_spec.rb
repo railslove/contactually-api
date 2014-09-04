@@ -37,14 +37,14 @@ describe Contactually::Contacts do
     end
   end
 
-  describe '#delete' do
+  describe '#destroy' do
     it 'throws an error if contact id is missing' do
-      expect{ subject.delete }.to raise_error Contactually::MissingParameterError
+      expect{ subject.destroy }.to raise_error Contactually::MissingParameterError
     end
 
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts/1.json', :delete, {})
-      subject.delete({ id: 1 })
+      subject.destroy({ id: 1 })
       expect(@master).to have_received(:call)
     end
   end

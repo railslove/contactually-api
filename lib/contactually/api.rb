@@ -14,6 +14,14 @@ module Contactually
       Contactually::Contacts.new self
     end
 
+    def notes
+      Contactually::Notes.new self
+    end
+
+    def groupings
+      Contactually::Groupings.new self
+    end
+
     private
 
     def call_params(params)
@@ -29,9 +37,9 @@ module Contactually
       JSON.load(response.body)
     end
 
-    [ :get, :put, :delete ].each do |method|
-      define_method("#{method}_call") do |url, params|
-        response = Faraday.send(method, base_url(url), call_params(params))
+    [ :get, :put, :delete ].each do |method_name|
+      define_method("#{method_name}_call") do |url, params|
+        response = Faraday.send(method_name, base_url(url), call_params(params))
         JSON.load(response.body)
       end
     end

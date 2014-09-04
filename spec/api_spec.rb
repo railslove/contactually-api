@@ -55,6 +55,18 @@ describe Contactually::API do
       end
     end
 
+    describe '#notes' do
+      specify do
+        expect(subject.notes).to be_kind_of Contactually::Notes
+      end
+    end
+
+    describe '#groupings' do
+      specify do
+        expect(subject.groupings).to be_kind_of Contactually::Groupings
+      end
+    end
+
     describe '#get_call' do
       it 'parses from json response' do
         allow(Faraday).to receive(:get).
@@ -71,5 +83,4 @@ describe Contactually::API do
       end
     end
   end
-
 end

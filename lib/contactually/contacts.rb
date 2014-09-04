@@ -51,7 +51,7 @@ module Contactually
       ContactRepresenter.new(Contact.new).from_hash(hash)
     end
 
-    def delete(params = {})
+    def destroy(params = {})
       raise MissingParameterError, 'Contact ID missing' unless params[:id]
       @master.call("contacts/#{params[:id]}.json", :delete, {})
     end
@@ -97,11 +97,9 @@ module Contactually
     end
 
     def contacts_hash_to_objects(hash)
-      res = []
-      hash['contacts'].each do |contact|
-        res << ContactRepresenter.new(Contact.new).from_hash(contact)
+      hash['contacts'].inject([]) do |arr, contact|
+        arr << ContactRepresenter.new(Contact.new).from_hash(contact)
       end
-      res
     end
   end
 end

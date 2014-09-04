@@ -45,11 +45,9 @@ module Contactually
     end
 
     def notes_hash_to_objects(hash)
-      res = []
-      hash['notes'].each do |note|
-        res << NoteRepresenter.new(Note.new).from_hash(note)
+      hash['notes'].inject([]) do |arr, note|
+        arr << NoteRepresenter.new(Note.new).from_hash(note)
       end
-      res
     end
   end
 end

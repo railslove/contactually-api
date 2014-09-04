@@ -9,6 +9,7 @@ require 'contactually/errors'
 require 'contactually/api'
 require 'contactually/contacts'
 require 'contactually/notes'
+require 'contactually/groupings'
 
 module Contactually
   include ActiveSupport::Configurable
