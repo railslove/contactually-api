@@ -6,6 +6,7 @@ require 'roar/representer/json'
 
 require 'contactually/version'
 require 'contactually/errors'
+require 'contactually/utils'
 require 'contactually/api'
 require 'contactually/contacts'
 require 'contactually/notes'

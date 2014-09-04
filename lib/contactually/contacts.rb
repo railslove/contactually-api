@@ -63,20 +63,20 @@ module Contactually
 
     def show(params = {})
       raise MissingParameterError, 'Contact ID missing' unless params[:id]
-      hash = @master.call("contacts/#{params[:id]}.json", :get, params_without_id(params))
+      hash = @master.call("contacts/#{params[:id]}.json", :get, Contactually::Utils.params_without_id(params))
       ContactRepresenter.new(Contact.new).from_hash(hash)
     end
 
     def tags(params = {})
       raise MissingParameterError, 'Contact ID missing' unless params[:id]
       raise MissingParameterError, 'Contact tags missing' unless params[:tags] && params[:tags].class == Array
-      @master.call("contacts/#{params[:id]}/tags.json", :post, params_without_id(params))
+      @master.call("contacts/#{params[:id]}/tags.json", :post, Contactually::Utils.params_without_id(params))
     end
 
     def update(params = {})
       raise MissingParameterError, 'Contact ID missing' unless params[:id]
       raise MissingParameterError, 'Contact hash missing' unless params[:contact]
-      @master.call("contacts/#{params[:id]}.json", :put, params_without_id(params))
+      @master.call("contacts/#{params[:id]}.json", :put, Contactually::Utils.params_without_id(params))
     end
 
     def index(params = {})
@@ -91,10 +91,6 @@ module Contactually
     end
 
     private
-
-    def params_without_id(params)
-      params.clone.delete_if { |k,v| k == :id }
-    end
 
     def contacts_hash_to_objects(hash)
       hash['contacts'].inject([]) do |arr, contact|

@@ -148,11 +148,4 @@ describe Contactually::Contacts do
       expect(subject.search({ term: :foo_bar })[0]).to be_kind_of Contactually::Contact
     end
   end
-
-  describe '#params_without_id' do
-    specify do
-      expect(subject.send(:params_without_id, { id: 1, foo: :bar })).to eq({ foo: :bar })
-    end
-  end
-
 end

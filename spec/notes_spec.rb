@@ -68,6 +68,29 @@ describe Contactually::Notes do
     end
   end
 
+  describe '#update' do
+    it 'raises an error if id is missing' do
+      expect{ subject.update() }.to raise_error Contactually::MissingParameterError
+    end
+
+    it 'raises an error if note hash is missing' do
+      expect{ subject.update({ id: 1234 }) }.to raise_error Contactually::MissingParameterError
+    end
+
+    it 'calls the api with correct params' do
+      json = File.read(File.join(File.dirname(__FILE__),"fixtures/note.json"))
+      allow(@master).to receive(:call).with('notes/1.json', :put, { note: { foo: :bar }}).and_return(JSON.load(json))
+      subject.update({ id: 1, note: { foo: :bar }})
+      expect(@master).to have_received(:call)
+    end
+
+    it 'returns a note' do
+      json = File.read(File.join(File.dirname(__FILE__),"fixtures/note.json"))
+      allow(@master).to receive(:call).with('notes/1.json', :put, { note: { foo: :bar }}).and_return(JSON.load(json))
+      expect(subject.update({ id: 1, note: { foo: :bar }})).to be_kind_of Contactually::Note
+    end
+  end
+
   describe '#destroy' do
     specify do
       expect{ subject.destroy() }.to raise_error Contactually::MissingParameterError
