@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    Contactually-API (0.0.1)
+    contactually-api (0.0.1)
       activesupport
       faraday
       roar
@@ -70,7 +70,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  Contactually-API!
+  contactually-api!
   pry-byebug
   rake
   rspec
