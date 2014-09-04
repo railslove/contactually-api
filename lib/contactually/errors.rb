@@ -9,4 +9,7 @@ module Contactually
   class MissingParameterError < Error
   end
 
+  class APINotAcceptableError < StandardError
+  end
+
 end

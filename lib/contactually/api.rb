@@ -32,20 +32,31 @@ module Contactually
       response = Faraday.post do |req|
         req.url base_url(url)
         req.headers['Content-Type'] = 'application/json'
-        req.body = call_params(params)
+        req.body = call_params(params).to_json
       end
-      JSON.load(response.body)
+      handle_response(response)
     end
 
     [ :get, :put, :delete ].each do |method_name|
       define_method("#{method_name}_call") do |url, params|
         response = Faraday.send(method_name, base_url(url), call_params(params))
-        JSON.load(response.body)
+        handle_response(response)
       end
     end
 
     def base_url(url)
       "#{@base_url}#{url}"
+    end
+
+    def handle_response(response)
+      case response.status
+      when 200 then
+        JSON.load(response.body)
+      when 406 then
+        raise APINotAcceptableError, JSON.load(response.body)
+      else
+        raise Error, JSON.load(response.body)
+      end
     end
   end
 end

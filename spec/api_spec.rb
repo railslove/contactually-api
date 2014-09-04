@@ -82,5 +82,28 @@ describe Contactually::API do
         expect(subject.call('url', :post, { foo: :bar })).to be_kind_of Hash
       end
     end
+
+    describe '#handle_response' do
+      it 'should parse json body' do
+        response = Struct.new(:status, :body).new(200, 'Body')
+        allow(JSON).to receive(:load).with('Body')
+        subject.send(:handle_response, response)
+        expect(JSON).to have_received(:load)
+      end
+
+      it 'should throw error on 406' do
+        response = Struct.new(:status, :body).new(406, 'Error')
+        allow(JSON).to receive(:load).with('Error')
+        expect{ subject.send(:handle_response, response) }.to raise_error Contactually::APINotAcceptableError
+      end
+
+      it 'should throw error on everything else' do
+        response = Struct.new(:status, :body).new(500, 'Error')
+        allow(JSON).to receive(:load).with('Error')
+        expect{ subject.send(:handle_response, response) }.to raise_error Contactually::Error
+      end
+
+
+    end
   end
 end
