@@ -49,10 +49,10 @@ module Contactually
     end
 
     def handle_response(response)
-      case response.status
-      when 200 then
+      case response.status.to_s
+      when /^2\d\d/ then
         JSON.load(response.body)
-      when 406 then
+      when /^406/ then
         raise APINotAcceptableError, JSON.load(response.body)
       else
         raise Error, JSON.load(response.body)
