@@ -53,6 +53,13 @@ module Contactually
       GroupingRepresenter.new(Grouping.new).from_hash(hash)
     end
 
+    def update(params = {})
+      raise MissingParameterError, 'Grouping ID missing' unless params[:id]
+      raise MissingParameterError, 'Grouping Hash missing' unless params[:grouping]
+      hash = @master.call("groupings/#{params[:id]}.json", :put, params_without_id(params))
+      GroupingRepresenter.new(Grouping.new).from_hash(hash)
+    end
+
     private
 
     def params_without_id(params)

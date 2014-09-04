@@ -66,7 +66,7 @@ describe Contactually::Groupings do
 
   describe '#show' do
     it 'throws an error if grouping id is missing' do
-      expect{ subject.destroy }.to raise_error Contactually::MissingParameterError
+      expect{ subject.show }.to raise_error Contactually::MissingParameterError
     end
 
     it 'calls the api with correct params' do
@@ -75,11 +75,32 @@ describe Contactually::Groupings do
       expect(@master).to have_received(:call)
     end
 
-    it 'returns groupings from json response' do
+    it 'returns a grouping from json response' do
       json = File.read(File.join(File.dirname(__FILE__),"fixtures/grouping.json"))
       allow(@master).to receive(:call).with('groupings/1.json', :get, { foo: :bar }).and_return(JSON.load(json))
       expect(subject.show({ id: 1, foo: :bar })).to be_kind_of Contactually::Grouping
     end
   end
 
+  describe '#update' do
+    it 'throws an error if grouping id is missing' do
+      expect{ subject.update }.to raise_error Contactually::MissingParameterError
+    end
+
+    it 'throws an error if grouping hash is missing' do
+      expect{ subject.update({ id: 15 }) }.to raise_error Contactually::MissingParameterError
+    end
+
+    it 'calls the api with correct params' do
+      allow(@master).to receive(:call).with('groupings/1.json', :put, { grouping: { foo: :bar }}).and_return({ id: 1234 })
+      subject.update({ id: 1, grouping: { foo: :bar }})
+      expect(@master).to have_received(:call)
+    end
+
+    it 'returns a grouping from json response' do
+      json = File.read(File.join(File.dirname(__FILE__),"fixtures/grouping.json"))
+      allow(@master).to receive(:call).with('groupings/1.json', :put, { grouping: { foo: :bar }}).and_return(JSON.load(json))
+      expect(subject.update({ id: 1, grouping: { foo: :bar }})).to be_kind_of Contactually::Grouping
+    end
+  end
 end
