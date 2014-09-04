@@ -1,4 +1,4 @@
-require 'active_support'
+require 'active_support/configurable'
 require 'faraday'
 require 'json'
 require 'roar/decorator'
@@ -17,5 +17,4 @@ module Contactually
 
   config_accessor(:api_key)
   config_accessor(:contactually_url) { "https://www.contactually.com/api/v1/" }
-
 end
