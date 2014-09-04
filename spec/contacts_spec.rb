@@ -24,8 +24,16 @@ describe Contactually::Contacts do
     end
 
     it 'calls the api with correct params' do
-      allow(@master).to receive(:call).with('contacts.json', :post, { contact: { foo: :bar }})
+      json = File.read(File.join(File.dirname(__FILE__),"fixtures/contact.json"))
+      allow(@master).to receive(:call).with('contacts.json', :post, { contact: { foo: :bar }}).and_return(JSON.load(json))
       subject.create({ contact: { foo: :bar }})
+      expect(@master).to have_received(:call)
+    end
+
+    it 'returns a contact' do
+      json = File.read(File.join(File.dirname(__FILE__),"fixtures/contact.json"))
+      allow(@master).to receive(:call).with('contacts.json', :post, { contact: { foo: :bar }}).and_return(JSON.load(json))
+      expect(subject.create({ contact: { foo: :bar } })).to be_kind_of Contactually::Contact
     end
   end
 
@@ -37,6 +45,7 @@ describe Contactually::Contacts do
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts/1.json', :delete, {})
       subject.delete({ id: 1 })
+      expect(@master).to have_received(:call)
     end
   end
 
@@ -52,6 +61,7 @@ describe Contactually::Contacts do
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts.json', :delete, { ids: [ 1, 2, 3 ]})
       subject.destroy_multiple({ ids: [ 1, 2, 3 ]})
+      expect(@master).to have_received(:call)
     end
   end
 
@@ -59,6 +69,7 @@ describe Contactually::Contacts do
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts/1.json', :get, { foo: :bar }).and_return({ id: 1 })
       subject.show({ id: 1, foo: :bar })
+      expect(@master).to have_received(:call)
     end
 
     it 'returns a contact' do
@@ -84,6 +95,7 @@ describe Contactually::Contacts do
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts/1/tags.json', :post, { tags: [ 'lol' ] })
       subject.tags({ id: 1, tags: [ 'lol' ]})
+      expect(@master).to have_received(:call)
     end
   end
 
@@ -99,6 +111,7 @@ describe Contactually::Contacts do
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts/1.json', :put, { contact: { foo: :bar }})
       subject.update({ id: 1, contact: { foo: :bar } })
+      expect(@master).to have_received(:call)
     end
   end
 
@@ -106,6 +119,7 @@ describe Contactually::Contacts do
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts.json', :get, { foo: :bar }).and_return({ 'contacts' => [] })
       subject.index({ foo: :bar })
+      expect(@master).to have_received(:call)
     end
 
     it 'returns contacts from json response' do
@@ -124,6 +138,7 @@ describe Contactually::Contacts do
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts/search.json', :get, { term: :foo_bar }).and_return({ 'contacts' => [] })
       subject.search({ term: :foo_bar})
+      expect(@master).to have_received(:call)
     end
 
     it 'returns contacts from json response' do

@@ -47,7 +47,8 @@ module Contactually
 
     def create(params = {})
       raise MissingParameterError, 'Contact hash missing' unless params[:contact]
-      @master.call('contacts.json', :post, params)
+      hash = @master.call('contacts.json', :post, params)
+      ContactRepresenter.new(Contact.new).from_hash(hash)
     end
 
     def delete(params = {})
