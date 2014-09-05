@@ -1,0 +1,10 @@
+{
+  "id": 13123,
+  "username": "lol@rofl.com",
+  "remote_id": "lol@rofl.com",
+  "type": "Account::Google",
+  "disabled_at": null,
+  "name": "Google Contacts",
+  "nice_label": "lol@rofl.com",
+  "can_sync_contacts": true
+}

@@ -22,7 +22,7 @@ module Contactually
     end
 
     def show(id, params = {})
-      hash = @master.call("notes/#{id}.json", :get, Contactually::Utils.params_without_id(params))
+      hash = @master.call("notes/#{id}.json", :get, params)
       NoteRepresenter.new(Note.new).from_hash(hash)
     end
 
@@ -32,11 +32,11 @@ module Contactually
     end
 
     def destroy(id, params = {})
-      @master.call("notes/#{id}.json", :delete, Contactually::Utils.params_without_id(params))
+      @master.call("notes/#{id}.json", :delete, params)
     end
 
     def update(id, params = {})
-      hash = @master.call("notes/#{id}.json", :put, Contactually::Utils.params_without_id(params))
+      hash = @master.call("notes/#{id}.json", :put, params)
       NoteRepresenter.new(Note.new).from_hash(hash)
     end
 

@@ -6,11 +6,13 @@ require 'roar/representer/json'
 
 require 'contactually/version'
 require 'contactually/errors'
-require 'contactually/utils'
 require 'contactually/api'
 require 'contactually/contacts'
 require 'contactually/notes'
 require 'contactually/groupings'
+require 'contactually/contact_groupings'
+require 'contactually/accounts'
+require 'contactually/contents'
 
 module Contactually
   include ActiveSupport::Configurable

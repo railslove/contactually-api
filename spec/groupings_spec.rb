@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Contactually::Groupings do
 
   before(:all) do
-    Contactually.api_key = 'VALID_API_KEY'
+    Contactually.configure { |c| c.api_key = 'VALID_API_KEY' }
     @master = Contactually::API.new
   end
 
@@ -81,6 +81,20 @@ describe Contactually::Groupings do
       json = File.read(File.join(File.dirname(__FILE__),"fixtures/grouping.json"))
       allow(@master).to receive(:call).with('groupings/1.json', :put, { grouping: { foo: :bar }}).and_return(JSON.load(json))
       expect(subject.update(1, { grouping: { foo: :bar }})).to be_kind_of Contactually::Grouping
+    end
+  end
+
+  describe '#statistics' do
+    it 'calls the api with correct params' do
+      allow(@master).to receive(:call).with('groupings/1/statistics.json', :get, { foo: :bar }).and_return({ 'messages_sent' => 10 })
+      subject.statistics(1, { foo: :bar })
+      expect(@master).to have_received(:call)
+    end
+
+    it 'returns statistics object' do
+      json = File.read(File.join(File.dirname(__FILE__), "fixtures/groupings_statistics.json"))
+      allow(@master).to receive(:call).with('groupings/1/statistics.json', :get, { foo: :bar }).and_return(JSON.load(json))
+      expect(subject.statistics(1, { foo: :bar })).to be_kind_of Contactually::GroupingStatistics
     end
   end
 end

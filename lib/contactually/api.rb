@@ -22,6 +22,14 @@ module Contactually
       Contactually::Groupings.new self
     end
 
+    def accounts
+      Contactually::Accounts.new self
+    end
+
+    def contact_groupings
+      Contactually::ContactGroupings.new self
+    end
+
     private
 
     def call_params(params)

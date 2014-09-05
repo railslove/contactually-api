@@ -6,9 +6,6 @@ module Contactually
   class ConfigMissingApiKeyError < Error
   end
 
-  class MissingParameterError < Error
-  end
-
   class InvalidParametersError < Error
   end
 

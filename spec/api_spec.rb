@@ -3,13 +3,14 @@ require 'spec_helper'
 describe Contactually::API do
 
   describe 'missing configuration' do
+    before(:all) { Contactually.configure { |c| c.api_key = nil } }
     specify do
       expect{ subject }.to raise_error Contactually::ConfigMissingApiKeyError
     end
   end
 
   describe 'valid configuration' do
-    before(:all) { Contactually.api_key = 'VALID_API_KEY' }
+    before(:all) { Contactually.configure { |c| c.api_key = 'VALID_API_KEY' } }
 
     describe '#initialize' do
       it 'initializes correctly' do

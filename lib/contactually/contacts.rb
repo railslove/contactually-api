@@ -38,6 +38,10 @@ module Contactually
     property :social_profiles
     property :websites
     property :custom_fields
+    property :sent
+    property :received
+    property :link
+    property :content
   end
 
   class Contacts
@@ -59,17 +63,22 @@ module Contactually
     end
 
     def show(id, params = {})
-      hash = @master.call("contacts/#{id}.json", :get, Contactually::Utils.params_without_id(params))
+      hash = @master.call("contacts/#{id}.json", :get, params)
+      ContactRepresenter.new(Contact.new).from_hash(hash)
+    end
+
+    def merge(params = {})
+      hash = @master.call('contacts/merge.json', :post, params)
       ContactRepresenter.new(Contact.new).from_hash(hash)
     end
 
     def tags(id, params = {})
       params[:tags] = params[:tags].join(', ') if params[:tags].class == Array
-      @master.call("contacts/#{id}/tags.json", :post, Contactually::Utils.params_without_id(params))
+      @master.call("contacts/#{id}/tags.json", :post, params)
     end
 
     def update(id, params = {})
-      @master.call("contacts/#{id}.json", :put, Contactually::Utils.params_without_id(params))
+      @master.call("contacts/#{id}.json", :put, params)
     end
 
     def index(params = {})

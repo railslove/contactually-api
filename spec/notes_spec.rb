@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Contactually::Notes do
 
   before(:all) do
-    Contactually.api_key = 'VALID_API_KEY'
+    Contactually.configure { |c| c.api_key = 'VALID_API_KEY' }
     @master = Contactually::API.new
   end
 

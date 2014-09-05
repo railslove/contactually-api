@@ -1,0 +1,26 @@
+{
+  "count": 2,
+  "total_count": 2,
+  "contents": [
+    {
+      "id": 39,
+      "url": null,
+      "title": "Lolokopter",
+      "description": null,
+      "user_id": 62,
+      "created_at": "2014-09-05T15:28:40Z",
+      "article": null,
+      "groupings": []
+    },
+    {
+      "id": 18,
+      "url": null,
+      "title": "Lolokopter",
+      "description": null,
+      "user_id": 62,
+      "created_at": "2014-09-05T15:26:47Z",
+      "article": null,
+      "groupings": []
+    }
+  ]
+}
