@@ -1,6 +1,5 @@
 module Contactually
   class ContactGroupings
-
     def initialize(master)
       @master = master
     end
