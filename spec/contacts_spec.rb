@@ -19,10 +19,6 @@ describe Contactually::Contacts do
   end
 
   describe '#create' do
-    it 'throws an error if contact hash is missing' do
-      expect{ subject.create }.to raise_error Contactually::MissingParameterError
-    end
-
     it 'calls the api with correct params' do
       json = File.read(File.join(File.dirname(__FILE__),"fixtures/contact.json"))
       allow(@master).to receive(:call).with('contacts.json', :post, { contact: { foo: :bar }}).and_return(JSON.load(json))
@@ -38,26 +34,14 @@ describe Contactually::Contacts do
   end
 
   describe '#destroy' do
-    it 'throws an error if contact id is missing' do
-      expect{ subject.destroy }.to raise_error Contactually::MissingParameterError
-    end
-
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts/1.json', :delete, {})
-      subject.destroy({ id: 1 })
+      subject.destroy(1)
       expect(@master).to have_received(:call)
     end
   end
 
   describe '#destroy_multiple' do
-    it 'throws an error if contact ids are missing' do
-      expect{ subject.destroy_multiple}.to raise_error Contactually::MissingParameterError
-    end
-
-    it 'throws an error if contact ids is no array' do
-      expect{ subject.destroy_multiple({ ids: 1 }) }.to raise_error Contactually::MissingParameterError
-    end
-
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts.json', :delete, { ids: [ 1, 2, 3 ]})
       subject.destroy_multiple({ ids: [ 1, 2, 3 ]})
@@ -68,51 +52,35 @@ describe Contactually::Contacts do
   describe '#show' do
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts/1.json', :get, { foo: :bar }).and_return({ id: 1 })
-      subject.show({ id: 1, foo: :bar })
+      subject.show(1, { foo: :bar })
       expect(@master).to have_received(:call)
     end
 
     it 'returns a contact' do
       json = File.read(File.join(File.dirname(__FILE__),"fixtures/contact.json"))
       allow(@master).to receive(:call).with('contacts/1.json', :get, { foo: :bar }).and_return(JSON.load(json))
-      expect(subject.show({ id: 1, foo: :bar })).to be_kind_of Contactually::Contact
+      expect(subject.show(1, { foo: :bar })).to be_kind_of Contactually::Contact
     end
   end
 
   describe '#tags' do
-    it 'throws an error if contact id is missing' do
-      expect{ subject.tags({ tags: [ 'lol' ]}) }.to raise_error Contactually::MissingParameterError
-    end
-
-    it 'throws an error if tags are missing' do
-      expect{ subject.tags({ id: 1 }) }.to raise_error Contactually::MissingParameterError
-    end
-
     it 'calls the api with correct params - Array' do
       allow(@master).to receive(:call).with('contacts/1/tags.json', :post, { tags: 'lol, haha' })
-      subject.tags({ id: 1, tags: [ 'lol', 'haha' ]})
+      subject.tags(1, { tags: [ 'lol', 'haha' ]})
       expect(@master).to have_received(:call)
     end
 
     it 'calls the api with correct params - String' do
       allow(@master).to receive(:call).with('contacts/1/tags.json', :post, { tags: 'lol, haha' })
-      subject.tags({ id: 1, tags: 'lol, haha' })
+      subject.tags(1, { tags: 'lol, haha' })
       expect(@master).to have_received(:call)
     end
   end
 
   describe '#update' do
-    it 'throws an error if contact hash is missing' do
-      expect{ subject.update({ id: 1 }) }.to raise_error Contactually::MissingParameterError
-    end
-
-    it 'throws an error if contact id is missing' do
-      expect{ subject.update({ contact: { foo: :bar } }) }.to raise_error Contactually::MissingParameterError
-    end
-
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts/1.json', :put, { contact: { foo: :bar }})
-      subject.update({ id: 1, contact: { foo: :bar } })
+      subject.update(1, { contact: { foo: :bar } })
       expect(@master).to have_received(:call)
     end
   end
@@ -133,10 +101,6 @@ describe Contactually::Contacts do
   end
 
   describe '#search' do
-    it 'throws an Error if search term is missing' do
-      expect{ subject.search }.to raise_error Contactually::MissingParameterError
-    end
-
     it 'calls the api with correct params' do
       allow(@master).to receive(:call).with('contacts/search.json', :get, { term: :foo_bar }).and_return({ 'contacts' => [] })
       subject.search({ term: :foo_bar})

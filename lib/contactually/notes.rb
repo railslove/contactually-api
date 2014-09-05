@@ -21,27 +21,22 @@ module Contactually
       notes_hash_to_objects(hash)
     end
 
-    def show(params = {})
-      raise MissingParameterError, 'Note ID missing' unless params[:id]
-      hash = @master.call("notes/#{params[:id]}.json", :get, Contactually::Utils.params_without_id(params))
+    def show(id, params = {})
+      hash = @master.call("notes/#{id}.json", :get, Contactually::Utils.params_without_id(params))
       NoteRepresenter.new(Note.new).from_hash(hash)
     end
 
     def create(params = {})
-      raise MissingParameterError, 'Note Hash missing' unless params[:note]
       hash = @master.call('notes.json', :post, params)
       NoteRepresenter.new(Note.new).from_hash(hash)
     end
 
-    def destroy(params = {})
-      raise MissingParameterError, 'Note ID missing' unless params[:id]
-      @master.call("notes/#{params[:id]}.json", :delete, Contactually::Utils.params_without_id(params))
+    def destroy(id, params = {})
+      @master.call("notes/#{id}.json", :delete, Contactually::Utils.params_without_id(params))
     end
 
-    def update(params = {})
-      raise MissingParameterError, 'Note ID missing' unless params[:id]
-      raise MissingParameterError, 'Note Hash missing' unless params[:note]
-      hash = @master.call("notes/#{params[:id]}.json", :put, Contactually::Utils.params_without_id(params))
+    def update(id, params = {})
+      hash = @master.call("notes/#{id}.json", :put, Contactually::Utils.params_without_id(params))
       NoteRepresenter.new(Note.new).from_hash(hash)
     end
 

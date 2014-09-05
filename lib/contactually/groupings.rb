@@ -32,7 +32,6 @@ module Contactually
     end
 
     def create(params = {})
-      raise MissingParameterError, 'Grouping hash missing' unless params[:grouping]
       hash = @master.call('groupings.json', :post, params)
       GroupingRepresenter.new(Grouping.new).from_hash(hash)
     end
@@ -42,21 +41,17 @@ module Contactually
       groupings_hash_to_objects(hash)
     end
 
-    def destroy(params = {})
-      raise MissingParameterError, 'Grouping ID missing' unless params[:id]
-      @master.call("groupings/#{params[:id]}.json", :delete, Contactually::Utils.params_without_id(params))
+    def destroy(id, params = {})
+      @master.call("groupings/#{id}.json", :delete, Contactually::Utils.params_without_id(params))
     end
 
-    def show(params = {})
-      raise MissingParameterError, 'Grouping ID missing' unless params[:id]
-      hash = @master.call("groupings/#{params[:id]}.json", :get, Contactually::Utils.params_without_id(params))
+    def show(id, params = {})
+      hash = @master.call("groupings/#{id}.json", :get, Contactually::Utils.params_without_id(params))
       GroupingRepresenter.new(Grouping.new).from_hash(hash)
     end
 
-    def update(params = {})
-      raise MissingParameterError, 'Grouping ID missing' unless params[:id]
-      raise MissingParameterError, 'Grouping Hash missing' unless params[:grouping]
-      hash = @master.call("groupings/#{params[:id]}.json", :put, Contactually::Utils.params_without_id(params))
+    def update(id, params = {})
+      hash = @master.call("groupings/#{id}.json", :put, Contactually::Utils.params_without_id(params))
       GroupingRepresenter.new(Grouping.new).from_hash(hash)
     end
 

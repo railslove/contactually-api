@@ -52,10 +52,19 @@ module Contactually
       case response.status.to_s
       when /^2\d\d/ then
         JSON.load(response.body)
-      when /^406/ then
-        raise APINotAcceptableError, JSON.load(response.body)
       else
-        raise Error, JSON.load(response.body)
+        cast_error(JSON.load(response.body))
+      end
+    end
+
+    def cast_error(body)
+      case body['error']
+      when /^Invalid parameters/ then
+        raise InvalidParametersError, body
+      when /^We already have/ then
+        raise DuplicatedContactError, body
+      else
+        raise APIError, body
       end
     end
   end

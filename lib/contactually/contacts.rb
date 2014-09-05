@@ -46,38 +46,30 @@ module Contactually
     end
 
     def create(params = {})
-      raise MissingParameterError, 'Contact hash missing' unless params[:contact]
       hash = @master.call('contacts.json', :post, params)
       ContactRepresenter.new(Contact.new).from_hash(hash)
     end
 
-    def destroy(params = {})
-      raise MissingParameterError, 'Contact ID missing' unless params[:id]
-      @master.call("contacts/#{params[:id]}.json", :delete, {})
+    def destroy(id, params = {})
+      @master.call("contacts/#{id}.json", :delete, {})
     end
 
     def destroy_multiple(params = {})
-      raise MissingParameterError, 'Contact ids missing' unless params[:ids] && params[:ids].class == Array
       @master.call('contacts.json', :delete, params)
     end
 
-    def show(params = {})
-      raise MissingParameterError, 'Contact ID missing' unless params[:id]
-      hash = @master.call("contacts/#{params[:id]}.json", :get, Contactually::Utils.params_without_id(params))
+    def show(id, params = {})
+      hash = @master.call("contacts/#{id}.json", :get, Contactually::Utils.params_without_id(params))
       ContactRepresenter.new(Contact.new).from_hash(hash)
     end
 
-    def tags(params = {})
-      raise MissingParameterError, 'Contact ID missing' unless params[:id]
-      raise MissingParameterError, 'Contact tags missing' unless params[:tags]
+    def tags(id, params = {})
       params[:tags] = params[:tags].join(', ') if params[:tags].class == Array
-      @master.call("contacts/#{params[:id]}/tags.json", :post, Contactually::Utils.params_without_id(params))
+      @master.call("contacts/#{id}/tags.json", :post, Contactually::Utils.params_without_id(params))
     end
 
-    def update(params = {})
-      raise MissingParameterError, 'Contact ID missing' unless params[:id]
-      raise MissingParameterError, 'Contact hash missing' unless params[:contact]
-      @master.call("contacts/#{params[:id]}.json", :put, Contactually::Utils.params_without_id(params))
+    def update(id, params = {})
+      @master.call("contacts/#{id}.json", :put, Contactually::Utils.params_without_id(params))
     end
 
     def index(params = {})
@@ -86,7 +78,6 @@ module Contactually
     end
 
     def search(params = {})
-      raise MissingParameterError, 'Search term missing' unless params[:term]
       hash = @master.call('contacts/search.json', :get, params)
       contacts_hash_to_objects(hash)
     end
