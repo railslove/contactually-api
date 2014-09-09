@@ -7,6 +7,8 @@ require 'roar/representer/json'
 require 'contactually/version'
 require 'contactually/errors'
 
+require 'contactually/middleware/error_detector'
+
 require 'contactually/representer/grouping_representer'
 require 'contactually/representer/account_representer'
 require 'contactually/representer/contact_representer'

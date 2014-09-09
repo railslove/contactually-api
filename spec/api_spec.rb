@@ -25,16 +25,16 @@ describe Contactually::API do
     end
 
     describe '#call' do
-      it 'redirects get request to get_call' do
-        allow(subject).to receive(:get_call)
+      it 'redirects get request to get' do
+        allow(subject).to receive(:get)
         subject.call('bla', :get, {})
-        expect(subject).to have_received(:get_call).with('bla', {})
+        expect(subject).to have_received(:get).with('bla', {})
       end
 
-      it 'redirects post request to post_call' do
-        allow(subject).to receive(:post_call)
+      it 'redirects post request to post' do
+        allow(subject).to receive(:post)
         subject.call('bla', :post, {})
-        expect(subject).to have_received(:post_call).with('bla', {})
+        expect(subject).to have_received(:post).with('bla', {})
       end
     end
 
@@ -68,41 +68,20 @@ describe Contactually::API do
       end
     end
 
-    describe '#get_call' do
+    describe '#get' do
       it 'parses from json response' do
-        allow(Faraday).to receive(:get).
+        allow(subject.connection).to receive(:get).
           with('https://www.contactually.com/api/v1/url', { foo: :bar, api_key: 'VALID_API_KEY' }).
           and_return(Struct.new(:status, :body).new(200, "{ \"foo\": \"bar\" }"))
         expect(subject.call('url', :get, { foo: :bar })).to be_kind_of Hash
       end
     end
 
-    describe '#post_call' do
+    describe '#post' do
       it 'parses from json response' do
-        allow(Faraday).to receive(:post).and_return(Struct.new(:status, :body).new(200, "{ \"foo\": \"bar\" }"))
+        allow(subject.connection).to receive(:post).and_return(Struct.new(:status, :body).new(200, "{ \"foo\": \"bar\" }"))
         expect(subject.call('url', :post, { foo: :bar })).to be_kind_of Hash
       end
-    end
-
-    describe '#handle_response' do
-      it 'is expected to parse json body' do
-        response = Struct.new(:status, :body).new(200, 'Body')
-        allow(JSON).to receive(:load).with('Body')
-        subject.send(:handle_response, response)
-        expect(JSON).to have_received(:load)
-      end
-
-      it 'throws error on duplication' do
-        response = Struct.new(:status, :body).new(406, '{ "error": "We already have Chuck Norris ..." }')
-        expect{ subject.send(:handle_response, response) }.to raise_error Contactually::DuplicatedContactError
-      end
-
-      it 'throws error on everything else' do
-        response = Struct.new(:status, :body).new(500, '{ "error": "Hardcore Error" }')
-        expect{ subject.send(:handle_response, response) }.to raise_error Contactually::APIError
-      end
-
-
     end
   end
 end
