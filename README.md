@@ -47,13 +47,15 @@ Configuration goes as follows:
 ```ruby
     contactually = Contactually::API.new
     contacts = contactually.contacts.index
+    # => [#<Contactually::Contact id=1234, ...>, #<Contactually::Contact id=1235, ...>, ...]
     notes = contactually.notes.index
+    # => [#<Contactually::Note id=2345, ...>, #<Contactually::Note id=2346, ...>, ...]
     groupings = contactually.groupings.index
+    # => [#<Contactually::Grouping id=3456, ...>, #<Contactually::Grouping id=3457, ...>, ...]
 
     contact = { contact: { first_name: 'Jane', last_name: 'Doe', ... } }
     contactually.contacts.create(contact)
-
-    ...
+    # => #<Contactually::Contact id=9876, first_name='Jane', last_name='Doe', ...>
 ```
 
 Implemented endpoints are:
