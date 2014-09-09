@@ -1,0 +1,38 @@
+{
+  "count": 1,
+  "total_count": 1,
+  "tasks": [
+    {
+      "id": 123123,
+      "title": "Lolokopter",
+      "due_date": "2015-10-01T00:00:00Z",
+      "interaction_type": null,
+      "completed_at": null,
+      "deleted_at": null,
+      "is_follow_up": false,
+      "last_contacted": null,
+      "contact_id": 1234,
+      "ignored": null,
+      "completed_via": null,
+      "user_id": 12345,
+      "approval_data": {
+        "approval_type": false,
+        "approval_text": false,
+        "approval_url": false,
+        "approval_template": false,
+        "approval_account_id": false
+      },
+      "contact_program_step_id": null,
+      "unresponded_followup_id": null,
+      "user_bucket": {
+        "id": 12312,
+        "name": "Colleague"
+      }
+    }
+  ],
+  "weekly_progress": [
+    0,
+    7
+  ],
+  "on_due_date": true
+}

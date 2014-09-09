@@ -94,7 +94,7 @@ describe Contactually::Groupings do
     it 'returns statistics object' do
       json = File.read(File.join(File.dirname(__FILE__), "fixtures/groupings_statistics.json"))
       allow(@master).to receive(:call).with('groupings/1/statistics.json', :get, { foo: :bar }).and_return(JSON.load(json))
-      expect(subject.statistics(1, { foo: :bar })).to be_kind_of Contactually::GroupingStatistics
+      expect(subject.statistics(1, { foo: :bar })).to be_kind_of Contactually::GroupingStatistic
     end
   end
 end

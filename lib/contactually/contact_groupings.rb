@@ -6,7 +6,7 @@ module Contactually
 
     def create(id, params = {})
       hash = @master.call("contacts/#{id}/groupings.json", :post, params)
-      GroupingRepresenter.new(Grouping.new).from_hash(hash)
+      Contactually::Utils.build_grouping(hash)
     end
 
     def destroy(id, grouping_id, params = {})

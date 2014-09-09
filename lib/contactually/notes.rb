@@ -6,17 +6,17 @@ module Contactually
 
     def index(params = {})
       hash = @master.call('notes.json', :get, params)
-      notes_hash_to_objects(hash)
+      Contactually::Utils.notes_hash_to_objects(hash)
     end
 
     def show(id, params = {})
       hash = @master.call("notes/#{id}.json", :get, params)
-      NoteRepresenter.new(Note.new).from_hash(hash)
+      Contactually::Utils.build_note(hash)
     end
 
     def create(params = {})
       hash = @master.call('notes.json', :post, params)
-      NoteRepresenter.new(Note.new).from_hash(hash)
+      Contactually::Utils.build_note(hash)
     end
 
     def destroy(id, params = {})
@@ -25,15 +25,7 @@ module Contactually
 
     def update(id, params = {})
       hash = @master.call("notes/#{id}.json", :put, params)
-      NoteRepresenter.new(Note.new).from_hash(hash)
-    end
-
-    private
-
-    def notes_hash_to_objects(hash)
-      hash['notes'].inject([]) do |arr, note|
-        arr << NoteRepresenter.new(Note.new).from_hash(note)
-      end
+      Contactually::Utils.build_note(hash)
     end
   end
 end
