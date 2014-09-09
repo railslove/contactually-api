@@ -17,13 +17,13 @@ Gem::Specification.new do |s|
   s.files = Dir['{lib}/**/*'] + ['LICENSE.txt', 'Rakefile', 'README.md']
   s.test_files = Dir['spec/**/*']
 
-  s.add_dependency 'activesupport', '~> 4.1.5'
-  s.add_dependency 'faraday', '~> 0.9.0'
-  s.add_dependency 'roar', '~> 0.12.9'
+  s.add_dependency 'activesupport', '~> 4.1'
+  s.add_dependency 'faraday', '~> 0.9'
+  s.add_dependency 'roar', '~> 0.12'
 
-  s.add_development_dependency 'pry-byebug'
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'pry-byebug', '~> 2.0'
+  s.add_development_dependency 'rake', '~> 10'
+  s.add_development_dependency 'rspec', '~> 3'
 
   s.required_ruby_version = '>= 2.0'
 end
