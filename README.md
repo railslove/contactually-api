@@ -1,9 +1,10 @@
 # Contactually-API
 
+[![Code Climate](https://codeclimate.com/github/railslove/contactually-api/badges/gpa.svg)](https://codeclimate.com/github/railslove/contactually-api)
 [![Build
 Status](https://travis-ci.org/railslove/contactually-api.svg?branch=master)](https://travis-ci.org/railslove/contactually-api)
 
-TODO: Write a gem description
+This is a simple API Wrapper for the contactually API. It is not feature complete, as it does not support all available API endpoints yet, but I guess for most use cases this will be fine. Feel free to contribute!
 
 ## Installation
 
@@ -34,13 +35,16 @@ The available configuration options are:
 
 Configuration goes as follows:
 
+```ruby
     Contactually.configure do |c|
       c.api_key           = "YOURKEY"
       c.contactually_url  = "URL"
     end
+```
 
 #### How to use the gem
 
+```ruby
     contactually = Contactually::API.new
     contacts = contactually.contacts.index
     notes = contactually.notes.index
@@ -50,6 +54,17 @@ Configuration goes as follows:
     contactually.contacts.create(contact)
 
     ...
+```
+
+Implemented endpoints are:
+
+* Accounts
+* Contact Groupings
+* Contacts
+* Contents
+* Groupings
+* Notes
+* Tasks
 
 The API is documented here: [Contactually API Docs](http://developers.contactually.com/docs/)
 
