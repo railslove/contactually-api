@@ -7,7 +7,8 @@ module Contactually
     end
 
     def call(url, method, params={})
-      JSON.load(send(method, url, params))
+      response = send(method, url, params)
+      JSON.load(response.body)
     end
 
     def contacts
@@ -50,14 +51,14 @@ module Contactually
           req.url base_url(url)
           req.body = call_params(params).to_json
         end
-        response.body
+        response
       end
     end
 
     [ :get, :delete ].each do |method_name|
       define_method(method_name) do |url, params|
         response = connection.send(method_name, base_url(url), call_params(params))
-        response.body
+        response
       end
     end
 

@@ -26,13 +26,13 @@ describe Contactually::API do
 
     describe '#call' do
       it 'redirects get request to get' do
-        allow(subject).to receive(:get)
+        allow(subject).to receive(:get).and_return(Struct.new(:status, :body).new(200, {}))
         subject.call('bla', :get, {})
         expect(subject).to have_received(:get).with('bla', {})
       end
 
       it 'redirects post request to post' do
-        allow(subject).to receive(:post)
+        allow(subject).to receive(:post).and_return(Struct.new(:status, :body).new(200, {}))
         subject.call('bla', :post, {})
         expect(subject).to have_received(:post).with('bla', {})
       end
