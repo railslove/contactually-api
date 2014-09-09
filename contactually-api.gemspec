@@ -10,15 +10,16 @@ Gem::Specification.new do |s|
   s.authors     = [ 'Johannes Heck' ]
   s.email       = [ 'johannes@railslove.com' ]
   s.homepage    = 'https://github.com/railslove/contactually-api'
-  s.summary     = 'Contactually-API'
-  s.description = 'Contactually-API'
+  s.summary     = 'A wrapper for the contactually.com api'
+  s.description = 'This is a simple wrapper for the contactually api. Try it!'
+  s.license     = 'MIT'
 
   s.files = Dir['{lib}/**/*'] + ['LICENSE.txt', 'Rakefile', 'README.md']
   s.test_files = Dir['spec/**/*']
 
-  s.add_dependency 'activesupport'
-  s.add_dependency 'faraday'
-  s.add_dependency 'roar'
+  s.add_dependency 'activesupport', '~> 4.1.5'
+  s.add_dependency 'faraday', '~> 0.9.0'
+  s.add_dependency 'roar', '~> 0.12.9'
 
   s.add_development_dependency 'pry-byebug'
   s.add_development_dependency 'rake'
