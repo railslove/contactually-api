@@ -45,21 +45,30 @@ module Contactually
       params.merge({ api_key: @api_key })
     end
 
-    [ :post, :put ].each do |method_name|
-      define_method(method_name) do |url, params|
-        response = connection.send(method_name) do |req|
-          req.url base_url(url)
-          req.body = call_params(params).to_json
-        end
-        response
+    def post(url, params)
+      response = connection.post do |req|
+        req.url base_url(url)
+        req.body = call_params(params).to_json
       end
+      response
     end
 
-    [ :get, :delete ].each do |method_name|
-      define_method(method_name) do |url, params|
-        response = connection.send(method_name, base_url(url), call_params(params))
-        response
+    def put(url, params)
+      response = connection.put do |req|
+        req.url base_url(url)
+        req.body = call_params(params).to_json
       end
+      response
+    end
+
+    def get(url, params)
+      response = connection.get(base_url(url), call_params(params))
+      response
+    end
+
+    def delete(url, params)
+      response = connection.delete(base_url(url), call_params(params))
+      response
     end
 
     def base_url(url)
