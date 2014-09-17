@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe Contactually::Tasks do
 
+  let(:task_json) { File.read(File.join(File.dirname(__FILE__),"fixtures/task.json")) }
+  let(:tasks_index_json) { File.read(File.join(File.dirname(__FILE__),"fixtures/tasks_index.json")) }
+
   before(:all) do
     Contactually.configure { |c| c.api_key = 'VALID_API_KEY' }
     @master = Contactually::API.new
@@ -20,60 +23,52 @@ describe Contactually::Tasks do
 
   describe '#show' do
     it 'calls the api with correct params' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/task.json"))
-      allow(@master).to receive(:call).with('tasks/1.json', :get, { foo: :bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('tasks/1.json', :get, { foo: :bar }).and_return(JSON.load(task_json))
       subject.show(1, { foo: :bar })
       expect(@master).to have_received(:call)
     end
 
     it 'returns a task' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/task.json"))
-      allow(@master).to receive(:call).with('tasks/1.json', :get, { foo: :bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('tasks/1.json', :get, { foo: :bar }).and_return(JSON.load(task_json))
       expect(subject.show(1, { foo: :bar })).to be_kind_of Contactually::Task
     end
   end
 
   describe '#complete' do
     it 'calls the api with correct params' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/task.json"))
-      allow(@master).to receive(:call).with('tasks/1/complete.json', :post, { foo: :bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('tasks/1/complete.json', :post, { foo: :bar }).and_return(JSON.load(task_json))
       subject.complete(1, { foo: :bar })
       expect(@master).to have_received(:call)
     end
 
     it 'returns a task' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/task.json"))
-      allow(@master).to receive(:call).with('tasks/1/complete.json', :post, { foo: :bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('tasks/1/complete.json', :post, { foo: :bar }).and_return(JSON.load(task_json))
       expect(subject.complete(1, { foo: :bar })).to be_kind_of Contactually::Task
     end
   end
 
   describe '#create' do
     it 'calls the api with correct params' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/task.json"))
-      allow(@master).to receive(:call).with('tasks.json', :post, { foo: :bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('tasks.json', :post, { foo: :bar }).and_return(JSON.load(task_json))
       subject.create({ foo: :bar })
       expect(@master).to have_received(:call)
     end
 
     it 'returns a new task' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/task.json"))
-      allow(@master).to receive(:call).with('tasks.json', :post, { foo: :bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('tasks.json', :post, { foo: :bar }).and_return(JSON.load(task_json))
       expect(subject.create({ foo: :bar })).to be_kind_of Contactually::Task
     end
   end
 
   describe '#update' do
     it 'calls the api with correct params' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/task.json"))
-      allow(@master).to receive(:call).with('tasks/1.json', :put, { foo: :bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('tasks/1.json', :put, { foo: :bar }).and_return(JSON.load(task_json))
       subject.update(1, { foo: :bar })
       expect(@master).to have_received(:call)
     end
 
     it 'returns a new task' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/task.json"))
-      allow(@master).to receive(:call).with('tasks/1.json', :put, { foo: :bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('tasks/1.json', :put, { foo: :bar }).and_return(JSON.load(task_json))
       expect(subject.update(1, { foo: :bar })).to be_kind_of Contactually::Task
     end
   end
@@ -104,15 +99,13 @@ describe Contactually::Tasks do
 
   describe '#ignore' do
     it 'calls the api with correct params' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/task.json"))
-      allow(@master).to receive(:call).with('tasks/1/ignore.json', :post, { foo: :bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('tasks/1/ignore.json', :post, { foo: :bar }).and_return(JSON.load(task_json))
       subject.ignore(1, { foo: :bar })
       expect(@master).to have_received(:call)
     end
 
     it 'returns a new task' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/task.json"))
-      allow(@master).to receive(:call).with('tasks/1/ignore.json', :post, { foo: :bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('tasks/1/ignore.json', :post, { foo: :bar }).and_return(JSON.load(task_json))
       expect(subject.ignore(1, { foo: :bar })).to be_kind_of Contactually::Task
     end
   end
@@ -125,8 +118,7 @@ describe Contactually::Tasks do
     end
 
     it 'returns tasks from json response' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/tasks_index.json"))
-      allow(@master).to receive(:call).with('tasks.json', :get, {}).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('tasks.json', :get, {}).and_return(JSON.load(tasks_index_json))
       expect(subject.index({})).to be_kind_of Array
       expect(subject.index({})[0]).to be_kind_of Contactually::Task
     end

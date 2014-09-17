@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe Contactually::ContactGroupings do
 
+  let(:grouping_json) { File.read(File.join(File.dirname(__FILE__),"fixtures/grouping.json")) }
+
   before(:all) do
     Contactually.configure { |c| c.api_key = 'VALID_API_KEY' }
     @master = Contactually::API.new
@@ -27,8 +29,7 @@ describe Contactually::ContactGroupings do
     end
 
     it 'returns grouping from json response' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/grouping.json"))
-      allow(@master).to receive(:call).with('contacts/1/groupings.json', :post, { grouping_id: 512 }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('contacts/1/groupings.json', :post, { grouping_id: 512 }).and_return(JSON.load(grouping_json))
       expect(subject.create(1, { grouping_id: 512 })).to be_kind_of Contactually::Grouping
     end
   end

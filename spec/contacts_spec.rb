@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe Contactually::Contacts do
 
+  let(:contact_json) { File.read(File.join(File.dirname(__FILE__),"fixtures/contact.json")) }
+  let(:contacts_index_json) { File.read(File.join(File.dirname(__FILE__),"fixtures/contacts_index.json")) }
+
   before(:all) do
     Contactually.configure { |c| c.api_key = 'VALID_API_KEY' }
     @master = Contactually::API.new
@@ -20,15 +23,13 @@ describe Contactually::Contacts do
 
   describe '#create' do
     it 'calls the api with correct params' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/contact.json"))
-      allow(@master).to receive(:call).with('contacts.json', :post, { contact: { foo: :bar }}).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('contacts.json', :post, { contact: { foo: :bar }}).and_return(JSON.load(contact_json))
       subject.create({ contact: { foo: :bar }})
       expect(@master).to have_received(:call)
     end
 
     it 'returns a contact' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/contact.json"))
-      allow(@master).to receive(:call).with('contacts.json', :post, { contact: { foo: :bar }}).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('contacts.json', :post, { contact: { foo: :bar }}).and_return(JSON.load(contact_json))
       expect(subject.create({ contact: { foo: :bar } })).to be_kind_of Contactually::Contact
     end
   end
@@ -57,8 +58,7 @@ describe Contactually::Contacts do
     end
 
     it 'returns a contact' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/contact.json"))
-      allow(@master).to receive(:call).with('contacts/1.json', :get, { foo: :bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('contacts/1.json', :get, { foo: :bar }).and_return(JSON.load(contact_json))
       expect(subject.show(1, { foo: :bar })).to be_kind_of Contactually::Contact
     end
   end
@@ -93,8 +93,7 @@ describe Contactually::Contacts do
     end
 
     it 'returns contacts from json response' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/contacts_index.json"))
-      allow(@master).to receive(:call).with('contacts.json', :get, {}).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('contacts.json', :get, {}).and_return(JSON.load(contacts_index_json))
       expect(subject.index({})).to be_kind_of Array
       expect(subject.index({})[0]).to be_kind_of Contactually::Contact
     end
@@ -108,8 +107,7 @@ describe Contactually::Contacts do
     end
 
     it 'returns contacts from json response' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/contacts_index.json"))
-      allow(@master).to receive(:call).with('contacts/search.json', :get, { term: :foo_bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('contacts/search.json', :get, { term: :foo_bar }).and_return(JSON.load(contacts_index_json))
       expect(subject.search({ term: :foo_bar })).to be_kind_of Array
       expect(subject.search({ term: :foo_bar })[0]).to be_kind_of Contactually::Contact
     end

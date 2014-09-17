@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe Contactually::Accounts do
 
+  let(:account_json) { File.read(File.join(File.dirname(__FILE__),"fixtures/account.json")) }
+  let(:accounts_index_json) { File.read(File.join(File.dirname(__FILE__),"fixtures/accounts_index.json")) }
+
   before(:all) do
     Contactually.configure { |c| c.api_key = 'VALID_API_KEY' }
     @master = Contactually::API.new
@@ -26,8 +29,7 @@ describe Contactually::Accounts do
     end
 
     it 'returns accounts from json response' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/accounts_index.json"))
-      allow(@master).to receive(:call).with('accounts.json', :get, {}).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('accounts.json', :get, {}).and_return(JSON.load(accounts_index_json))
       expect(subject.index({})).to be_kind_of Array
       expect(subject.index({})[0]).to be_kind_of Contactually::Account
     end
@@ -41,8 +43,7 @@ describe Contactually::Accounts do
     end
 
     it 'returns an account' do
-      json = File.read(File.join(File.dirname(__FILE__),"fixtures/account.json"))
-      allow(@master).to receive(:call).with('accounts/1.json', :get, { foo: :bar }).and_return(JSON.load(json))
+      allow(@master).to receive(:call).with('accounts/1.json', :get, { foo: :bar }).and_return(JSON.load(account_json))
       expect(subject.show(1, { foo: :bar })).to be_kind_of Contactually::Account
     end
   end
