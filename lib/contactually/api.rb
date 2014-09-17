@@ -12,23 +12,23 @@ module Contactually
     end
 
     def contacts
-      Contactually::Contacts.new self
+      @contacts ||= Contactually::Contacts.new self
     end
 
     def notes
-      Contactually::Notes.new self
+      @notes ||= Contactually::Notes.new self
     end
 
     def groupings
-      Contactually::Groupings.new self
+      @groupings ||= Contactually::Groupings.new self
     end
 
     def accounts
-      Contactually::Accounts.new self
+      @accounts ||= Contactually::Accounts.new self
     end
 
     def contact_groupings
-      Contactually::ContactGroupings.new self
+      @contact_groupings ||= Contactually::ContactGroupings.new self
     end
 
     def connection
@@ -46,15 +46,14 @@ module Contactually
     end
 
     def post(url, params)
-      response = connection.post do |req|
+      connection.post do |req|
         req.url base_url(url)
         req.body = call_params(params).to_json
       end
-      response
     end
 
     def put(url, params)
-      response = connection.put do |req|
+      connection.put do |req|
         req.url base_url(url)
         req.body = call_params(params).to_json
       end
@@ -62,13 +61,11 @@ module Contactually
     end
 
     def get(url, params)
-      response = connection.get(base_url(url), call_params(params))
-      response
+      connection.get(base_url(url), call_params(params))
     end
 
     def delete(url, params)
-      response = connection.delete(base_url(url), call_params(params))
-      response
+      connection.delete(base_url(url), call_params(params))
     end
 
     def base_url(url)
