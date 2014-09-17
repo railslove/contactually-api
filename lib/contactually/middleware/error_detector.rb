@@ -10,7 +10,7 @@ module Contactually
         end
       end
 
-      private
+    private
 
       def cast_error(body)
         case JSON.parse(body)['error']

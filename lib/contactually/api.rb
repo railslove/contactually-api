@@ -6,8 +6,8 @@ module Contactually
       @base_url = Contactually.config.contactually_url
     end
 
-    def call(url, method, params={})
-      response = send(method, url, params)
+    def call(url, http_method, params={})
+      response = send(http_method, url, params)
       JSON.load(response.body)
     end
 
@@ -33,13 +33,13 @@ module Contactually
 
     def connection
       @connection ||= Faraday.new do |faraday|
-        faraday.adapter  Faraday.default_adapter
+        faraday.adapter Faraday.default_adapter
         faraday.headers['Content-Type'] = 'application/json'
         faraday.use Contactually::Middleware::ErrorDetector
       end
     end
 
-    private
+  private
 
     def call_params(params)
       params.merge({ api_key: @api_key })
@@ -57,7 +57,6 @@ module Contactually
         req.url base_url(url)
         req.body = call_params(params).to_json
       end
-      response
     end
 
     def get(url, params)
@@ -71,6 +70,5 @@ module Contactually
     def base_url(url)
       "#{@base_url}#{url}"
     end
-
-    end
+  end
 end
