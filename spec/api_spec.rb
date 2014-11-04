@@ -50,9 +50,33 @@ describe Contactually::API do
       end
     end
 
+    describe '#accounts' do
+      specify do
+        expect(subject.accounts).to be_kind_of Contactually::Accounts
+      end
+    end
+
+    describe '#contact_groupings' do
+      specify do
+        expect(subject.contact_groupings).to be_kind_of Contactually::ContactGroupings
+      end
+    end
+
     describe '#contacts' do
       specify do
         expect(subject.contacts).to be_kind_of Contactually::Contacts
+      end
+    end
+
+    describe '#contents' do
+      specify do
+        expect(subject.contents).to be_kind_of Contactually::Contents
+      end
+    end
+
+    describe '#groupings' do
+      specify do
+        expect(subject.groupings).to be_kind_of Contactually::Groupings
       end
     end
 
@@ -62,9 +86,15 @@ describe Contactually::API do
       end
     end
 
-    describe '#groupings' do
+    describe '#tasks' do
       specify do
-        expect(subject.groupings).to be_kind_of Contactually::Groupings
+        expect(subject.tasks).to be_kind_of Contactually::Tasks
+      end
+    end
+
+    describe 'endpoints' do
+      %w{ accounts contact_groupings contacts contents groupings notes tasks }.each do |endpoint|
+        specify { expect(subject.respond_to?(endpoint)).to eq true }
       end
     end
 

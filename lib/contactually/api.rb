@@ -35,6 +35,10 @@ module Contactually
       @contact_groupings ||= Contactually::ContactGroupings.new self
     end
 
+    def contents
+      @contents ||= Contactually::Contents.new self
+    end
+
     def connection
       @connection ||= Faraday.new do |faraday|
         faraday.adapter Faraday.default_adapter
