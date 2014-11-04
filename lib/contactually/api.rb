@@ -19,6 +19,10 @@ module Contactually
       @notes ||= Contactually::Notes.new self
     end
 
+    def tasks
+      @tasks ||= Contactually::Tasks.new self
+    end
+
     def groupings
       @groupings ||= Contactually::Groupings.new self
     end
