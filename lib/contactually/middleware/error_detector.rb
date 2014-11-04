@@ -3,7 +3,7 @@ module Contactually
     class ErrorDetector < Faraday::Middleware
 
       def call(env)
-        @app.call(env).on_complete do
+        @app.call(env).on_complete do |env|
           unless (200..299).include? env[:status]
             cast_error(env[:body])
           end
@@ -18,9 +18,13 @@ module Contactually
           raise InvalidParametersError, body
         when /^We already have/ then
           raise DuplicatedContactError, body
+        when /^You need to sign in/ then
+          raise AuthenticationError, body
         else
           raise APIError, body
         end
+      rescue JSON::ParserError
+        raise APIError, body
       end
     end
   end
