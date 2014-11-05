@@ -33,7 +33,8 @@ module Contactually
     end
 
     def update(id, params = {})
-      @master.call("contacts/#{id}.json", :put, params)
+      hash = @master.call("contacts/#{id}.json", :put, params)
+      Contactually::Utils.build_contact(hash);
     end
 
     def index(params = {})
