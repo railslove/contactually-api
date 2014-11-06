@@ -79,9 +79,14 @@ describe Contactually::Contacts do
 
   describe '#update' do
     it 'calls the api with correct params' do
-      allow(@master).to receive(:call).with('contacts/1.json', :put, { contact: { foo: :bar }})
+      allow(@master).to receive(:call).with('contacts/1.json', :put, { contact: { foo: :bar }}).and_return(JSON.load(contact_json))
       subject.update(1, { contact: { foo: :bar } })
       expect(@master).to have_received(:call)
+    end
+
+    it 'returns a contact from json response' do
+      allow(@master).to receive(:call).with('contacts/1.json', :put, { contact: { foo: :bar }}).and_return(JSON.load(contact_json))
+      expect(subject.update(1, { contact: { foo: :bar }})).to be_kind_of Contactually::Contact
     end
   end
 
