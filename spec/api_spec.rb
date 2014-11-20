@@ -7,6 +7,14 @@ describe Contactually::API do
     specify do
       expect{ subject }.to raise_error Contactually::ConfigMissingApiKeyError
     end
+
+    it 'allows to supply api key via initialize' do
+      expect{ described_class.new('asdf') }.not_to raise_error
+    end
+
+    it 'sets api_key from parameters' do
+      expect(described_class.new('asdf').instance_variable_get(:@api_key)).to eq 'asdf'
+    end
   end
 
   describe 'valid configuration' do

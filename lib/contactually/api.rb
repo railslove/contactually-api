@@ -1,8 +1,8 @@
 module Contactually
   class API
-    def initialize
-      raise ConfigMissingApiKeyError, 'You must provide a Contactually API key' unless Contactually.config.api_key
-      @api_key = Contactually.config.api_key
+    def initialize(api_key = nil)
+      raise ConfigMissingApiKeyError, 'You must provide a Contactually API key' unless Contactually.config.api_key || api_key
+      @api_key = Contactually.config.api_key || api_key
       @base_url = Contactually.config.contactually_url
     end
 
