@@ -46,5 +46,9 @@ module Contactually
       hash = @master.call('contacts/search.json', :get, params)
       Contactually::Utils.contacts_hash_to_objects(hash)
     end
+
+    def count(params = { limit: 1 })
+      @master.call('contacts.json', :get, params)["total_count"]
+    end
   end
 end

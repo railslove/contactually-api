@@ -117,4 +117,17 @@ describe Contactually::Contacts do
       expect(subject.search({ term: :foo_bar })[0]).to be_kind_of Contactually::Contact
     end
   end
+
+  describe '#count' do
+    it 'calls the api with correct params' do
+      allow(@master).to receive(:call).with('contacts.json', :get, { limit: 1 }).and_return({ 'contacts' => [], 'total_count' => 120 })
+      subject.count()
+      expect(@master).to have_received(:call)
+    end
+
+    it 'returns total count' do
+      allow(@master).to receive(:call).with('contacts.json', :get, { limit: 1 }).and_return({ 'contacts' => [], 'total_count' => 120 })
+      expect(subject.count).to be 120
+    end
+  end
 end
