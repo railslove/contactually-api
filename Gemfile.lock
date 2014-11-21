@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    contactually-api (0.0.6)
+    contactually-api (0.0.7)
       activesupport (~> 4.1)
       faraday (~> 0.9)
       roar (~> 0.12)
