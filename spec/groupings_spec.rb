@@ -4,7 +4,6 @@ describe Contactually::Groupings do
 
   let(:groupings_index_json) { File.read(File.join(File.dirname(__FILE__),"fixtures/groupings_index.json")) }
   let(:grouping_json) { File.read(File.join(File.dirname(__FILE__),"fixtures/grouping.json")) }
-  let(:groupings_statistics_json) { File.read(File.join(File.dirname(__FILE__), "fixtures/groupings_statistics.json")) }
 
   before(:all) do
     Contactually.configure { |c| c.api_key = 'VALID_API_KEY' }
@@ -81,19 +80,6 @@ describe Contactually::Groupings do
     it 'returns a grouping from json response' do
       allow(@master).to receive(:call).with('groupings/1.json', :put, { grouping: { foo: :bar }}).and_return(JSON.load(grouping_json))
       expect(subject.update(1, { grouping: { foo: :bar }})).to be_kind_of Contactually::Grouping
-    end
-  end
-
-  describe '#statistics' do
-    it 'calls the api with correct params' do
-      allow(@master).to receive(:call).with('groupings/1/statistics.json', :get, { foo: :bar }).and_return({ 'messages_sent' => 10 })
-      subject.statistics(1, { foo: :bar })
-      expect(@master).to have_received(:call)
-    end
-
-    it 'returns statistics object' do
-      allow(@master).to receive(:call).with('groupings/1/statistics.json', :get, { foo: :bar }).and_return(JSON.load(groupings_statistics_json))
-      expect(subject.statistics(1, { foo: :bar })).to be_kind_of Contactually::GroupingStatistic
     end
   end
 end
