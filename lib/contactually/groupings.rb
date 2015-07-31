@@ -32,10 +32,5 @@ module Contactually
       hash = @master.call("groupings/#{id}.json", :put, params)
       Contactually::Utils.build_grouping(hash)
     end
-
-    def statistics(id, params = {})
-      hash = @master.call("groupings/#{id}/statistics.json", :get, params)
-      Contactually::Utils.build_grouping_statistic(hash)
-    end
   end
 end
